@@ -85,7 +85,7 @@
     <Compile Include="Assets\Map Components\Scripts\Runtime\TileObject.cs" />
     <Compile Include="Assets\Map Components\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Map Components\Scripts\Runtime\TiledMap.cs" />
-    <Compile Include="Assets\Scripts\ArcherControl.cs" />
+    <Compile Include="Assets\Scripts\Archer.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\MainMenu.cs" />
   </ItemGroup>
