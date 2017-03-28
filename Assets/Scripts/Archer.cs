@@ -28,7 +28,16 @@ public class Archer : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        health--;
+        if (collision.gameObject.tag == "Enemy")
+        {
+            health--;
+        }
+
+        else if (collision.gameObject.tag == "PlayerWeapon")
+        {
+            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
+
     }
 
 
@@ -90,25 +99,25 @@ public class Archer : MonoBehaviour {
         if (animator.GetInteger("Direction") == 0)
         {
             var arrow = (GameObject)Instantiate(ArrowPrefab, ArrowSpawn.position, Quaternion.Euler(0, 0, 90));
-            arrow.GetComponent<Rigidbody>().AddForce(arrow.transform.right * -1 * shotSpeed);
+            arrow.GetComponent<Rigidbody2D>().AddForce(arrow.transform.right * -1 * shotSpeed);
             Destroy(arrow, 3.0f);
         }
         else if (animator.GetInteger("Direction") == 1)
         {
-            var arrow = (GameObject)Instantiate(ArrowPrefab, ArrowSpawn.position, ArrowSpawn.rotation);
-            arrow.GetComponent<Rigidbody>().AddForce(arrow.transform.right * -1 * shotSpeed);
+            var arrow = (GameObject)Instantiate(ArrowPrefab, ArrowSpawn.position, Quaternion.Euler(0, 0, 360));
+            arrow.GetComponent<Rigidbody2D>().AddForce(arrow.transform.right * -1 * shotSpeed);
             Destroy(arrow, 3.0f);
         }
         else if (animator.GetInteger("Direction") == 2)
         {
             var arrow = (GameObject)Instantiate(ArrowPrefab, ArrowSpawn.position, Quaternion.Euler(0, 0, 270));
-            arrow.GetComponent<Rigidbody>().AddForce(arrow.transform.right * -1 * shotSpeed);
+            arrow.GetComponent<Rigidbody2D>().AddForce(arrow.transform.right * -1 * shotSpeed);
             Destroy(arrow, 3.0f);
         }
         else if (animator.GetInteger("Direction") == 3)
         {
             var arrow = (GameObject)Instantiate(ArrowPrefab, ArrowSpawn.position, Quaternion.Euler(0, 180, 0));
-            arrow.GetComponent<Rigidbody>().AddForce(arrow.transform.right * -1 * shotSpeed);
+            arrow.GetComponent<Rigidbody2D>().AddForce(arrow.transform.right * -1 * shotSpeed);
             Destroy(arrow, 3.0f);
         }
     }

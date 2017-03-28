@@ -62,10 +62,10 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        int x = 5;
-        if (collision.gameObject.tag == "EnemyWeapon")
+        if (collision.gameObject.tag == "PlayerWeapon")
         {
             health--;
+            Destroy(collision.gameObject);
         }
     }
 }
