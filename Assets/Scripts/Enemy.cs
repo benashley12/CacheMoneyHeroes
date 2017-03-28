@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     public float pullRange;
     public Transform player;
     public Rigidbody2D rb;
+    private Animator animator;
     private bool movedPosition = false;
     private float initialPositionX;
     private float initialPositionY;
@@ -22,11 +23,13 @@ public class Enemy : MonoBehaviour
         initialPositionY = transform.position.y;
         initialPositionZ = transform.position.z;
         rb = GetComponent<Rigidbody2D>();
+        animator = this.GetComponent<Animator>();
+
     }
 
     void FixedUpdate()
     {
-        if (health == 0)
+        if (health <= 0)
         {
             Destroy(this.gameObject);
         }
@@ -40,6 +43,8 @@ public class Enemy : MonoBehaviour
             float z = Mathf.Atan2((player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
             transform.eulerAngles = new Vector3(0, 0, z);
             rb.AddForce(gameObject.transform.up * speed);
+            animator.SetInteger("Direction", 2);
+            animator.SetBool("Move", true);
         }
 
         else if (movedPosition)
@@ -51,13 +56,13 @@ public class Enemy : MonoBehaviour
                 ((initialPositionY > transform.position.y - 1) && (initialPositionY < transform.position.y + 1)))
             {
                 movedPosition = false;
-                // Re-align sprites upright.
             }
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        int x = 5;
         if (collision.gameObject.tag == "EnemyWeapon")
         {
             health--;

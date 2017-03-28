@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Archer : MonoBehaviour {
 
@@ -25,9 +26,20 @@ public class Archer : MonoBehaviour {
         animator = this.GetComponent<Animator>();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        health--;
+    }
+
+
     // Update is called once per frame
     void Update()
     {
+        if (health <= 0)
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+
         var vertical = Input.GetAxis("Vertical");
         var horizontal = Input.GetAxis("Horizontal");
         myTime = myTime + Time.deltaTime;
