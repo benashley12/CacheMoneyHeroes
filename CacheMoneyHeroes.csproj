@@ -87,6 +87,7 @@
     <Compile Include="Assets\Map Components\Scripts\Runtime\TiledMap.cs" />
     <Compile Include="Assets\Scripts\Archer.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\EnemyFixed.cs" />
     <Compile Include="Assets\Scripts\MainMenu.cs" />
   </ItemGroup>
   <ItemGroup>
