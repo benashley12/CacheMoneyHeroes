@@ -31,7 +31,7 @@ public class Archer : MonoBehaviour {
         if (collision.gameObject.tag == "EnemyMelee")
         {
             health--;
-			//Update interface with hearts
+            //Update interface with hearts
         }
 
         else if (collision.gameObject.tag == "PlayerWeapon")
@@ -39,6 +39,15 @@ public class Archer : MonoBehaviour {
             Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         }
 
+        else if (collision.gameObject.tag == "DoorTrigger")
+        {
+            SceneManager.LoadScene("SnowCave");
+        }
+
+        else if (collision.gameObject.tag == "Dragon")
+        {
+            SceneManager.LoadScene("Outdoor");
+        }
     }
 
 

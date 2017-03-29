@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
+using UnityEngine.SceneManagement;
 
 public class EnemyFixed : MonoBehaviour
 {
