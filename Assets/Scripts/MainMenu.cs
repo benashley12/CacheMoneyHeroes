@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour {
     }
     public void StartLevel() //this function will be used on our Play button
     {
-        SceneManager.LoadScene("First"); //this will load our first level from our build settings. "1" is the second scene in our game
+        SceneManager.LoadScene("Outdoor"); //this will load our first level from our build settings. "1" is the second scene in our game
     }
 
     public void HighScorePress()
