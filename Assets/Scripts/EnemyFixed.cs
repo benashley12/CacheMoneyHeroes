@@ -38,7 +38,19 @@ public class EnemyFixed : MonoBehaviour
         float distance = Vector3.Distance(transform.position, player.position);
         System.Diagnostics.Debug.WriteLine(distance);
 
-        if ((distance < pullRange))
+        if (Archer.isInvisible == true)
+        {
+            float z = Mathf.Atan2((initialPositionY - transform.position.y), (initialPositionX - transform.position.x)) * Mathf.Rad2Deg - 90;
+            transform.eulerAngles = new Vector3(0, 0, z);
+            rb.AddForce(gameObject.transform.up * speed);
+            if (((initialPositionX > transform.position.x - 1) && (initialPositionX < transform.position.x + 1)) &&
+                ((initialPositionY > transform.position.y - 1) && (initialPositionY < transform.position.y + 1)))
+            {
+                movedPosition = false;
+            }
+        }
+
+        else if ((distance < pullRange))
         {
             movedPosition = true;
             float z = Mathf.Atan2((player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
