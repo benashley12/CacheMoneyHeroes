@@ -11,18 +11,13 @@ public class PlayerWolf : MonoBehaviour
     public float speed;
     public float pullRange;
     public Transform player;
+    public Transform enemyTarget;
     public Rigidbody2D rb;
     private Animator animator;
-    private bool movedPosition = false;
-    private float initialPositionX;
-    private float initialPositionY;
-    private float initialPositionZ;
+    public Transform enemy;
 
     void Start()
     {
-        initialPositionX = transform.position.x;
-        initialPositionY = transform.position.y;
-        initialPositionZ = transform.position.z;
         rb = GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
 
@@ -34,65 +29,129 @@ public class PlayerWolf : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        
+
 
         float distance = Vector3.Distance(transform.position, player.position);
-        System.Diagnostics.Debug.WriteLine(distance);
 
-        if ((distance < pullRange))
+        if (distance > pullRange)
         {
-            movedPosition = true;
-            float z = Mathf.Atan2((player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
-            transform.eulerAngles = new Vector3(0, 0, z);
-            rb.AddForce(gameObject.transform.up * speed);
-            animator.SetInteger("Direction", 2);
-            animator.SetBool("Move", true);
+            transform.position = new Vector3(player.position.x, player.position.y);
+
         }
-
-        else if (movedPosition)
+        
+        if (enemyTarget == null)
         {
-            float z = Mathf.Atan2((initialPositionY - transform.position.y), (initialPositionX - transform.position.x)) * Mathf.Rad2Deg - 90;
-            transform.eulerAngles = new Vector3(0, 0, z);
-            rb.AddForce(gameObject.transform.up * speed);
-            if (((initialPositionX > transform.position.x - 1) && (initialPositionX < transform.position.x + 1)) &&
-                ((initialPositionY > transform.position.y - 1) && (initialPositionY < transform.position.y + 1)))
+            if (distance > 30 )
             {
-                movedPosition = false;
+                float z = Mathf.Atan2((player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
+                transform.eulerAngles = new Vector3(0, 0, z);
+                rb.AddForce(gameObject.transform.up * speed);
+                animator.SetInteger("Direction", 2);
+                animator.SetBool("Move", true);
             }
-        }
 
-        // Gets a vector that points from the player's position to the target's.
-        var heading = transform.position - player.position;
-        var myDistance = heading.magnitude;
-        var direction = heading / myDistance; // This is now the normalized direction.
-        transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        if (isAround0(direction.x) && isAroundNegative1(direction.y)) // NORTH
-        {
-            animator.SetInteger("Direction", 2);
-            animator.SetBool("Move", true);
-        }
+            // Gets a vector that points from the player's position to the target's.
+            var heading = transform.position - player.position;
+            var myDistance = heading.magnitude;
+            var direction = heading / myDistance; // This is now the normalized direction.
+            transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        else if (isAroundNegative1(direction.x) && isAround0(direction.y)) // EAST
-        {
-            animator.SetInteger("Direction", 3);
-            animator.SetBool("Move", true);
-        }
+            if (isAround0(direction.x) && isAroundNegative1(direction.y)) // NORTH
+            {
+                animator.SetInteger("Direction", 2);
+                animator.SetBool("Move", true);
+            }
 
-        else if (isAroundPositive1(direction.x) && isAround0(direction.y)) // WEST
-        {
-            animator.SetInteger("Direction", 1);
-            animator.SetBool("Move", true);
-        }
+            else if (isAroundNegative1(direction.x) && isAround0(direction.y)) // EAST
+            {
+                animator.SetInteger("Direction", 3);
+                animator.SetBool("Move", true);
+            }
 
-        else if (isAround0(direction.x) && isAroundPositive1(direction.y)) // SOUTH
-        {
-            animator.SetInteger("Direction", 0);
-            animator.SetBool("Move", true);
+            else if (isAroundPositive1(direction.x) && isAround0(direction.y)) // WEST
+            {
+                animator.SetInteger("Direction", 1);
+                animator.SetBool("Move", true);
+            }
+
+            else if (isAround0(direction.x) && isAroundPositive1(direction.y)) // SOUTH
+            {
+                animator.SetInteger("Direction", 0);
+                animator.SetBool("Move", true);
+            }
+            else
+            {
+                animator.SetBool("Move", false);
+            }
         }
         else
         {
-            animator.SetBool("Move", false);
+
+            float z = Mathf.Atan2((enemyTarget.transform.position.y - enemyTarget.position.y), (enemyTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
+            transform.eulerAngles = new Vector3(0, 0, z);
+            rb.AddForce(gameObject.transform.up * speed);
+            animator.SetInteger("Direction", 2);
+            animator.SetBool("Move", true);
+            
+
+            // Gets a vector that points from the player's position to the target's.
+            var heading = transform.position - enemyTarget.position;
+            var myDistance = heading.magnitude;
+            var direction = heading / myDistance; // This is now the normalized direction.
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+
+            if (isAround0(direction.x) && isAroundNegative1(direction.y)) // NORTH
+            {
+                animator.SetInteger("Direction", 2);
+                animator.SetBool("Move", true);
+            }
+
+            else if (isAroundNegative1(direction.x) && isAround0(direction.y)) // EAST
+            {
+                animator.SetInteger("Direction", 3);
+                animator.SetBool("Move", true);
+            }
+
+            else if (isAroundPositive1(direction.x) && isAround0(direction.y)) // WEST
+            {
+                animator.SetInteger("Direction", 1);
+                animator.SetBool("Move", true);
+            }
+
+            else if (isAround0(direction.x) && isAroundPositive1(direction.y)) // SOUTH
+            {
+                animator.SetInteger("Direction", 0);
+                animator.SetBool("Move", true);
+            }
+            else
+            {
+                animator.SetBool("Move", false);
+            }
         }
+
+
+    }
+
+
+    Transform GetClosestEnemy(Transform[] enemies)
+    {
+        Transform bestTarget = null;
+        float closestDistanceSqr = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+        foreach (Transform potentialTarget in enemies)
+        {
+            Vector3 directionToTarget = potentialTarget.position - currentPosition;
+            float dSqrToTarget = directionToTarget.sqrMagnitude;
+            if (dSqrToTarget < closestDistanceSqr)
+            {
+                closestDistanceSqr = dSqrToTarget;
+                bestTarget = potentialTarget;
+            }
+        }
+
+        return bestTarget;
     }
 
     private bool isAround0(float x)

@@ -11,6 +11,7 @@ public class Archer : MonoBehaviour {
     public GameObject DildoPrefab;
     public Transform ArrowSpawn;
 
+
     // Player Stats
     public float speed = 1F;
     public int health = 3;
@@ -21,8 +22,11 @@ public class Archer : MonoBehaviour {
     public float fireDelay = 0.25F;
     private float nextFire = 0.25F;
     private float myTime = 0.0F;
-    private float timeStamp;
+    private float invisibleTimeStamp;
+    private float immuneTimeStamp;
     public static bool isInvisible = false;
+    private static bool isImmune = false;
+
 
     // Use this for initialization
     void Start()
@@ -35,8 +39,14 @@ public class Archer : MonoBehaviour {
     {
         if (collision.gameObject.tag == "EnemyMelee")
         {
-            health--;
-            //Update interface with hearts
+            if (!isImmune)
+            {
+                health--;
+                rb2d.velocity = new Vector2((transform.position.x - collision.gameObject.transform.position.x) * 25, rb2d.velocity.y);
+                SpriteRend.color = new Color(255F, 0F, 0F, .75F);
+                isImmune = true;
+                immuneTimeStamp = Time.time + .35F;
+            }
         }
 
         else if (collision.gameObject.tag == "PlayerWeapon")
@@ -56,10 +66,19 @@ public class Archer : MonoBehaviour {
 
         if (isInvisible == true)
         {
-            if (timeStamp < Time.time)
+            if (invisibleTimeStamp < Time.time)
             {
                 SpriteRend.color = new Color(1F, 1F, 1F, 1F);
                 isInvisible = false;
+            }
+        }
+
+        if (isImmune == true)
+        {
+            if (immuneTimeStamp < Time.time)
+            {
+                SpriteRend.color = new Color(1F, 1F, 1F, 1F);
+                isImmune = false;
             }
         }
 
@@ -128,7 +147,7 @@ public class Archer : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             animator.SetTrigger("UseAbility");
-            timeStamp = Time.time + 5;
+            invisibleTimeStamp = Time.time + 5;
             Cloak();
         }
 

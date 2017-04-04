@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\EnemyFixed.cs" />
     <Compile Include="Assets\Scripts\MainMenu.cs" />
     <Compile Include="Assets\Scripts\PlayerWolf.cs" />
+    <Compile Include="Assets\Scripts\WolfRadius.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\CircleObject.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\GroupLayer.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\ImportBehaviour.cs" />

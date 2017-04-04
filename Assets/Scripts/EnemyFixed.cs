@@ -17,6 +17,8 @@ public class EnemyFixed : MonoBehaviour
     private float initialPositionX;
     private float initialPositionY;
     private float initialPositionZ;
+    private SpriteRenderer SpriteRend;
+    private float timeStamp;
 
     void Start()
     {
@@ -25,7 +27,7 @@ public class EnemyFixed : MonoBehaviour
         initialPositionZ = transform.position.z;
         rb = GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
-
+        SpriteRend = this.GetComponent<SpriteRenderer>();
     }
 
     void FixedUpdate()
@@ -33,6 +35,11 @@ public class EnemyFixed : MonoBehaviour
         if (health <= 0)
         {
             Destroy(this.gameObject);
+        }
+
+        if (timeStamp < Time.time)
+        {
+            SpriteRend.color = new Color(1F, 1F, 1F, 1F);
         }
 
         float distance = Vector3.Distance(transform.position, player.position);
@@ -147,6 +154,8 @@ public class EnemyFixed : MonoBehaviour
     {
         if (collision.gameObject.tag == "PlayerWeapon")
         {
+            SpriteRend.color = new Color(255F, 0F, 0F, .75F);
+            timeStamp = Time.time + .35F;
             health--;
             Destroy(collision.gameObject);
         }
