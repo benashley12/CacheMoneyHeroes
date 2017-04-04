@@ -17,6 +17,8 @@ public class EnemyFixed : MonoBehaviour
     private float initialPositionX;
     private float initialPositionY;
     private float initialPositionZ;
+    private SpriteRenderer SpriteRend;
+    private float timeStamp;
 
     void Start()
     {
@@ -25,7 +27,7 @@ public class EnemyFixed : MonoBehaviour
         initialPositionZ = transform.position.z;
         rb = GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
-
+        SpriteRend = this.GetComponent<SpriteRenderer>();
     }
 
     void FixedUpdate()
@@ -35,10 +37,27 @@ public class EnemyFixed : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        if (timeStamp < Time.time)
+        {
+            SpriteRend.color = new Color(1F, 1F, 1F, 1F);
+        }
+
         float distance = Vector3.Distance(transform.position, player.position);
         System.Diagnostics.Debug.WriteLine(distance);
 
-        if ((distance < pullRange))
+        if (Archer.isInvisible == true)
+        {
+            float z = Mathf.Atan2((initialPositionY - transform.position.y), (initialPositionX - transform.position.x)) * Mathf.Rad2Deg - 90;
+            transform.eulerAngles = new Vector3(0, 0, z);
+            rb.AddForce(gameObject.transform.up * speed);
+            if (((initialPositionX > transform.position.x - 1) && (initialPositionX < transform.position.x + 1)) &&
+                ((initialPositionY > transform.position.y - 1) && (initialPositionY < transform.position.y + 1)))
+            {
+                movedPosition = false;
+            }
+        }
+
+        else if ((distance < pullRange))
         {
             movedPosition = true;
             float z = Mathf.Atan2((player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
@@ -135,6 +154,8 @@ public class EnemyFixed : MonoBehaviour
     {
         if (collision.gameObject.tag == "PlayerWeapon")
         {
+            SpriteRend.color = new Color(255F, 0F, 0F, .75F);
+            timeStamp = Time.time + .35F;
             health--;
             Destroy(collision.gameObject);
         }
